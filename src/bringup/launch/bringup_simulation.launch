@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="use_sim_time" value="false"/>
+
+   <arg name="map_file" default="$(find bringup)/maps/ttt.yaml"/>
+   <!-- Map server -->
+    <remap from="/map" to="/ow/global_map"/>
+
+   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>  
+
+     <remap from="/map" to="/ow/local_map"/>
+
+   <node pkg="map_server" name="map_server_1" type="map_server" args="$(arg map_file)"/>  
+
+   <arg name="rviz_config" default="$(find bringup)/rviz/simulation.rviz" />
+   <node pkg="rviz" type="rviz"
+        name="wamv_visualization" args="-d $(arg rviz_config)" />
+
+
+
+  <node pkg="tf" type="static_transform_publisher" name="tf_map2odom" args="0 0 0 0 0 0  map /wamv/odom 100"/>
+
+
+  <remap from="/wamv/sensors/lidars/lidar_wamv/points" to="/hesai/pandar"/>
+  <include file="$(find vrx_gazebo)/launch/myvrx.launch">
+  </include>
+  <node pkg="rrt_star_planner" type="rrt_star_planner.py" name="rrt_star_planner" output="screen"/>
+  <node pkg="perception" type="point_prejection.py" name="point_pre" output="screen" />
+  <node pkg="task_manager" type="task_manager.py" name="task_manager" output="screen" />
+
+</launch>
