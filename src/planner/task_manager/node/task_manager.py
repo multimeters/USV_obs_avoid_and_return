@@ -45,6 +45,7 @@ if __name__ == '__main__':
                         twist_msg.angular.z = 0
                         # Publish the Twist message
                         tm.cmd_vel_pub.publish(twist_msg)
+                        tm.goal_pose_pub.publish(tm.start_point)
                         tm.step=22
                 # try:
                 #     if(len(tm.path_dir)!=0):

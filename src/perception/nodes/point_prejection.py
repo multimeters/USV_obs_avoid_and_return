@@ -91,7 +91,7 @@ class MapProjection:
         for p in read_points(pc_msg, field_names=("x", "y", "z"), skip_nans=True):
             x, y, z = p
             # 例如: z在[-2, 5.5]之间, 并去除车体周围2m以内的点
-            if -2.0 < z < 5.5:
+            if -20.0 < z < 15.5:
                 if abs(x) > 2.0 or abs(y) > 2.0:
                     cropped_points.append((x, y, z))
 
